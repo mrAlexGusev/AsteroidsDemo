@@ -13,11 +13,9 @@ namespace AsteroidsDemo
     {
         private static BufferedGraphicsContext _context;
 
-
-
         static Game()
         {
-
+            R = new Random();
         }
 
         /// <summary>
@@ -35,6 +33,10 @@ namespace AsteroidsDemo
         /// </summary>
         public static int Height { get; set; }
 
+        /// <summary>
+        /// Объект генератора псевдослучайных чисел.
+        /// </summary>
+        public static Random R { get; }
 
         /// <summary>
         /// Инициализация игры.
@@ -92,7 +94,6 @@ namespace AsteroidsDemo
 
             #endregion
         }
-
 
         /// <summary>
         /// Наполнение и вывод буфера на экран.

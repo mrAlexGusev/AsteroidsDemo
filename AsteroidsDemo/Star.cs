@@ -29,12 +29,12 @@ namespace AsteroidsDemo
         /// </summary>
         public override void Update()
         {
-            Pos.X += Dir.X;
-            Pos.Y += Dir.Y;
-            if (Pos.X < 0) Dir.X = -Dir.X;
-            if (Pos.X > Game.Width) Dir.X = -Dir.X;
-            if (Pos.Y < 0) Dir.Y = -Dir.Y;
-            if (Pos.Y > Game.Height) Dir.Y = -Dir.Y;
+            Pos.X -= Dir.X;
+
+            if (!(Pos.X < 0 - Size.Width)) return;
+
+            Pos.X = Game.Width + Size.Width;
+            Pos.Y = Game.R.Next(Game.Height - Size.Height);
         }
     }
 }
