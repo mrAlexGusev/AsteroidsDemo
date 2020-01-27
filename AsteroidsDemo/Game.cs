@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -51,25 +52,68 @@ namespace AsteroidsDemo
             _context = BufferedGraphicsManager.Current;
             Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
 
+            // Загрузка объектов.
+            Load();
+
+            // Установка таймера.
+            var timer = new Timer { Interval = interval };
+
+            timer.Start();
+            timer.Tick += Timer_Tick;
         }
+
+        /// <summary>
+        /// Вызовы методов по таймеру.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static void Timer_Tick(object sender, EventArgs e)
+        {
+            Draw();
+            Update();
+        }
+
+        /// <summary>
+        /// Коллекция игровых объектов.
+        /// </summary>
+        private static List<BaseObject> _objs;
+
+        /// <summary>
+        /// Загрузка игровых объектов.
+        /// </summary>
+        private static void Load()
+        {
+            _objs = new List<BaseObject>();
+
+            #region Добавление объектов.
+
+            for (int i = 0; i < 50; i++)
+                _objs.Add(new BaseObject(new Vector2(600, i * 20), new Vector2(15 - i, 15 - i), new Size(20, 20)));
+
+            #endregion
+        }
+
 
         /// <summary>
         /// Наполнение и вывод буфера на экран.
         /// </summary>
         public static void Draw()
         {
-            #region Проверка вывода графики.
+            Buffer.Graphics.Clear(Color.Black);
 
-            //Buffer.Graphics.Clear(Color.Black);
+            foreach (var obj in _objs)
+                obj.Draw();
 
-            //Buffer.Graphics.DrawRectangle(Pens.White, new Rectangle(100, 100, 200, 200));
-            //Buffer.Graphics.FillEllipse(Brushes.Wheat, new Rectangle(100, 100, 200, 200));
+            Buffer.Render();
+        }
 
-            //Buffer.Render();
-
-            #endregion
-
-
+        /// <summary>
+        /// Обновление объектов.
+        /// </summary>
+        private static void Update()
+        {
+            foreach (var obj in _objs)
+                obj.Update();
         }
     }
 }
