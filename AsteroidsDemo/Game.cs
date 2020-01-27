@@ -60,14 +60,16 @@ namespace AsteroidsDemo
         {
             #region Проверка вывода графики.
 
-            Buffer.Graphics.Clear(Color.Black);
+            //Buffer.Graphics.Clear(Color.Black);
 
-            Buffer.Graphics.DrawRectangle(Pens.White, new Rectangle(100, 100, 200, 200));
-            Buffer.Graphics.FillEllipse(Brushes.Wheat, new Rectangle(100, 100, 200, 200));
+            //Buffer.Graphics.DrawRectangle(Pens.White, new Rectangle(100, 100, 200, 200));
+            //Buffer.Graphics.FillEllipse(Brushes.Wheat, new Rectangle(100, 100, 200, 200));
 
-            Buffer.Render();
+            //Buffer.Render();
 
             #endregion
+
+
         }
     }
 }
