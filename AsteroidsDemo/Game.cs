@@ -10,11 +10,29 @@ namespace AsteroidsDemo
 {
     public static class Game
     {
+        private static BufferedGraphicsContext _context;
+
+
+
         static Game()
         {
 
         }
 
+        /// <summary>
+        /// Графический буфер.
+        /// </summary>
+        public static BufferedGraphics Buffer { get; set; }
+
+        /// <summary>
+        /// Ширина графическового вывода.
+        /// </summary>
+        public static int Width { get; set; }
+
+        /// <summary>
+        /// Высота графическового вывода.
+        /// </summary>
+        public static int Height { get; set; }
 
 
         /// <summary>
@@ -24,7 +42,15 @@ namespace AsteroidsDemo
         /// <param name="v"></param>
         public static void Init(Form form, int interval)
         {
-            throw new NotImplementedException();
+            // Определение размера.
+            Width = form.ClientSize.Width;
+            Height = form.ClientSize.Height;
+
+            // Создание графического элемента и буфера.
+            var g = form.CreateGraphics();
+            _context = BufferedGraphicsManager.Current;
+            Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
+
         }
 
         /// <summary>
@@ -32,7 +58,16 @@ namespace AsteroidsDemo
         /// </summary>
         public static void Draw()
         {
-            throw new NotImplementedException();
+            #region Проверка вывода графики.
+
+            Buffer.Graphics.Clear(Color.Black);
+
+            Buffer.Graphics.DrawRectangle(Pens.White, new Rectangle(100, 100, 200, 200));
+            Buffer.Graphics.FillEllipse(Brushes.Wheat, new Rectangle(100, 100, 200, 200));
+
+            Buffer.Render();
+
+            #endregion
         }
     }
 }
