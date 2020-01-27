@@ -88,7 +88,7 @@ namespace AsteroidsDemo
             #region Добавление объектов.
 
             for (int i = 0; i < 50; i++)
-                _objs.Add(new BaseObject(new Vector2(600, i * 20), new Vector2(15 - i, 15 - i), new Size(20, 20)));
+                _objs.Add(new Star(new Vector2(600, i * 20), new Vector2(15 - i, 15 - i), new Size(20, 20)));
 
             #endregion
         }
