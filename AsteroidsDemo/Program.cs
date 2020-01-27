@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace AsteroidsDemo
 {
@@ -10,6 +8,17 @@ namespace AsteroidsDemo
     {
         static void Main(string[] args)
         {
+            Form form = new Form
+            {
+                Size = new Size(800, 600),
+            };
+
+            Game.Init(form, 15);
+
+            form.Show();
+            Game.Draw();
+
+            Application.Run(form);
         }
     }
 }
