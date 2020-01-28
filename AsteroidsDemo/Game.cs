@@ -81,11 +81,17 @@ namespace AsteroidsDemo
         private static List<BaseObject> _objs;
 
         /// <summary>
+        /// Коллекция астероидов.
+        /// </summary>
+        private static List<Asteroid> _asteroids;
+
+        /// <summary>
         /// Загрузка игровых объектов.
         /// </summary>
         private static void Load()
         {
             _objs = new List<BaseObject>();
+            _asteroids = new List<Asteroid>();
 
             #region Добавление объектов Star.
 
@@ -97,7 +103,14 @@ namespace AsteroidsDemo
             #region Добавление объекта Planet.
 
             _objs.Add(new Planet(new Vector2(200, 200), new Vector2(10, 10), new Size(150, 150)));
-           
+
+            #endregion
+
+            #region Добавление объектов Asteroid.
+
+            for (var i = 0; i < 20; i++)
+                _asteroids.Add(new Asteroid(new Vector2(R.Next(Width), R.Next(Height)), new Vector2(5, 10), new Size(30, 30)));
+                
             #endregion
         }
 
@@ -111,6 +124,9 @@ namespace AsteroidsDemo
             foreach (var obj in _objs)
                 obj.Draw();
 
+            foreach (var a in _asteroids)
+                a.Draw();
+
             Buffer.Render();
         }
 
@@ -121,6 +137,9 @@ namespace AsteroidsDemo
         {
             foreach (var obj in _objs)
                 obj.Update();
+
+            foreach (var a in _asteroids)
+                a.Update();
         }
     }
 }
