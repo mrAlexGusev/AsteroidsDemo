@@ -13,7 +13,7 @@ namespace AsteroidsDemo
         /// <param name="size"> Размер. </param>
         public Asteroid(Vector2 pos, Vector2 dir, Size size) : base(pos, dir, size)
         {
-           
+            Sprite = Sprites[Game.R.Next(Sprites.Length)];
         }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace AsteroidsDemo
         /// </summary>
         public override void Draw()
         {
-            Game.Buffer.Graphics.DrawRectangle(Pens.White, Pos.X, Pos.Y, Size.Width, Size.Height);
+            Game.Buffer.Graphics.DrawImage(Sprite, Pos.X, Pos.Y, Size.Width, Size.Height);
         }
 
         /// <summary>
@@ -43,6 +43,26 @@ namespace AsteroidsDemo
 
             if (Pos.Y > Game.Height + Size.Height)
                 Pos.Y = 0 - Size.Height;
+        }
+
+        /// <summary>
+        /// Рисуемый объект Image объекта Asteroid.
+        /// </summary>
+        public Bitmap Sprite { get; set; }
+
+        private static readonly Bitmap[] Sprites;
+
+        static Asteroid()
+        {
+            Sprites = new[]
+            {
+                Resources.Asteroid1,
+                Resources.Asteroid2,
+                Resources.Asteroid3,
+                Resources.Asteroid4,
+                Resources.Asteroid5,
+                Resources.Asteroid6
+            };
         }
     }
 }
