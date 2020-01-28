@@ -13,7 +13,7 @@ namespace AsteroidsDemo
         /// <param name="size"> Размер. </param>
         public Star(Vector2 pos, Vector2 dir, Size size) : base(pos, dir, size)
         {
-
+            Sprite = Resources.Star;
         }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace AsteroidsDemo
         /// </summary>
         public override void Draw()
         {
-            Game.Buffer.Graphics.DrawEllipse(Pens.White, Pos.X, Pos.Y, Size.Width, Size.Height);
+            Game.Buffer.Graphics.DrawImage(Sprite, Pos.X, Pos.Y, Size.Width, Size.Height);
         }
 
         /// <summary>
@@ -36,5 +36,10 @@ namespace AsteroidsDemo
             Pos.X = Game.Width + Size.Width;
             Pos.Y = Game.R.Next(Game.Height - Size.Height);
         }
+
+        /// <summary>
+        /// Рисуемый объект Image объекта Star.
+        /// </summary>
+        public Bitmap Sprite { get; set; }
     }
 }
