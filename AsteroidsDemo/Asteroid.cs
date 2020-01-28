@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
-    class Asteroid : BaseObject
+    class Asteroid : BaseObject, ISprite
     {
         /// <summary>
         /// Инициализация объекта Asteroid.
