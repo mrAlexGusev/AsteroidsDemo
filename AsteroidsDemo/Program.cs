@@ -13,7 +13,7 @@ namespace AsteroidsDemo
                 Size = new Size(800, 600),
             };
 
-            Game.Init(form, 15);
+            Game.Init(form, 100);
 
             form.Show();
             Game.Draw();
