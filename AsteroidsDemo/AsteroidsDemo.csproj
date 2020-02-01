@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Asteroid.cs" />
     <Compile Include="BaseObject.cs" />
+    <Compile Include="Bullet.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IRandomDirAndSize.cs" />
     <Compile Include="ISprite.cs" />
@@ -70,7 +71,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\Bullet.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Asteroid1.png" />
   </ItemGroup>
