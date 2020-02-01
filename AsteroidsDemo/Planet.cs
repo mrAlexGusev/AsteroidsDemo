@@ -58,7 +58,7 @@ namespace AsteroidsDemo
             };
         }
 
-        /// <summary>
+         /// <summary>
         /// Минимальная скорость объекта Planet.
         /// </summary>
         public Vector2 MinDir { get; set; }

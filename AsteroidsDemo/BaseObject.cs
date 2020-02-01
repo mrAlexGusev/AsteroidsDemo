@@ -34,6 +34,8 @@ namespace AsteroidsDemo
             Pos = pos;
             Dir = dir;
             Size = size;
+
+            Active = false;
         }
 
         /// <summary>
@@ -46,5 +48,35 @@ namespace AsteroidsDemo
         /// </summary>
         public abstract void Update();
 
+        /// <summary>
+        /// Поле, хранящее в себе активное состояние объекта BaseObject.
+        /// </summary>
+        private bool _active;
+
+        /// <summary>
+        /// Показывает, активен ли BaseObject для отрисовки.
+        /// </summary>
+        public bool Active
+        {
+            get => _active;
+            set
+            {
+                if (_active == value) return;
+
+                _active = value;
+                if (_active) OnEnable();
+                else OnDisable();
+            }
+        }
+
+        /// <summary>
+        /// Метод вызывается при активации BaseObject.
+        /// </summary>
+        protected virtual void OnEnable() { }
+
+        /// <summary>
+        /// Метод вызывается при деактивации BaseObject.
+        /// </summary>
+        protected virtual void OnDisable() { }
     }
 }
