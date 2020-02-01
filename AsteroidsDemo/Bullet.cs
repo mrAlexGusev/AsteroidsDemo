@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
-    class Bullet : BaseObject, ISprite
+    class Bullet : BaseObject, ISprite, ICollision
     {
         /// <summary>
         /// Инициализация объекта Bullet.
@@ -29,7 +29,9 @@ namespace AsteroidsDemo
             Game.Buffer.Graphics.DrawImage(Sprite, Pos.X, Pos.Y, Size.Width, Size.Height);
         }
 
-
+        /// <summary>
+        /// Метод изменения состояния объекта Bullet.
+        /// </summary>
         public override void Update()
         {
             // Пуля летит слева направо.
@@ -38,5 +40,18 @@ namespace AsteroidsDemo
             // Если пуля за пределами, то уничтожаем.
             if (Pos.X > Game.Width - Size.Width) Active = false;
         }
+
+        /// <summary>
+        /// Задает область столкновения.
+        /// </summary>
+        public Rectangle Rect => new Rectangle((int)Pos.X, (int)Pos.Y, Size.Width, Size.Height);
+
+        /// <summary>
+        /// Метод проверки столкновения объектов.
+        /// </summary>
+        /// <param name="o"> Другой объект. </param>
+        /// <returns></returns>
+        public bool Collision(ICollision o) => o.Rect.IntersectsWith(Rect);
+
     }
 }
