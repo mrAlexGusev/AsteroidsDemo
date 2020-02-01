@@ -33,6 +33,8 @@ namespace AsteroidsDemo
 
             if (!(Pos.X < 0 - Size.Width)) return;
 
+            SetRandomDisAndSize();
+
             Pos.X = Game.Width + Size.Width;
             Pos.Y = Game.R.Next(Game.Height - Size.Height);
         }
@@ -100,5 +102,13 @@ namespace AsteroidsDemo
             Size.Height = Size.Height < MinSize.Height ? MinSize.Height : Size.Height;
         }
 
+        /// <summary>
+        /// При активации устанавливает первоначальные случайные скорость и размер объекта Planet.
+        /// </summary>
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            SetRandomDisAndSize();
+        }
     }
 }

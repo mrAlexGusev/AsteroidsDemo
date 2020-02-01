@@ -102,7 +102,13 @@ namespace AsteroidsDemo
 
             #region Добавление объекта Planet.
 
-            _objs.Add(new Planet(new Vector2(200, 200), new Vector2(10, 10), new Size(150, 150)));
+            _objs.Add(new Planet(new Vector2(R.Next(Width), R.Next(Height)), new Vector2(), new Size())
+            {
+                MinDir = new Vector2(40f, 0),
+                MaxDir = new Vector2(80f, 0),
+                MinSize = new Size(128, 128),
+                MaxSize = new Size(256, 256)
+            });
 
             #endregion
 
@@ -110,7 +116,16 @@ namespace AsteroidsDemo
 
             for (var i = 0; i < 20; i++)
                 _asteroids.Add(new Asteroid(new Vector2(R.Next(Width), R.Next(Height)), new Vector2(5, 10), new Size(30, 30)));
-                
+
+            #endregion
+
+
+            #region Активизация объектов.
+
+            // Звезды и планета.
+            foreach (var obj in _objs)
+                obj.Active = true;
+                        
             #endregion
         }
 
