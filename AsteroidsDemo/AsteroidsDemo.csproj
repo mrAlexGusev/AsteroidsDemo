@@ -50,6 +50,7 @@
     <Compile Include="BaseObject.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="ICollision.cs" />
     <Compile Include="IRandomDirAndSize.cs" />
     <Compile Include="ISprite.cs" />
     <Compile Include="Planet.cs" />
