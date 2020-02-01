@@ -96,21 +96,52 @@ namespace AsteroidsDemo
             #region Добавление объектов Star.
 
             for (int i = 0; i < 50; i++)
-                _objs.Add(new Star(new Vector2(600, i * 20), new Vector2(15 - i, 15 - i), new Size(20, 20)));
+                _objs.Add(new Star(new Vector2(R.Next(Width), R.Next(Height)), new Vector2(), new Size())
+                {
+                    MinDir = new Vector2(20f, 0),
+                    MaxDir = new Vector2(60f, 0),
+                    MinSize = new Size(4, 4),
+                    MaxSize = new Size(16, 16)
+                });
 
             #endregion
 
             #region Добавление объекта Planet.
 
-            _objs.Add(new Planet(new Vector2(200, 200), new Vector2(10, 10), new Size(150, 150)));
+            _objs.Add(new Planet(new Vector2(R.Next(Width), R.Next(Height)), new Vector2(), new Size())
+            {
+                MinDir = new Vector2(40f, 0),
+                MaxDir = new Vector2(80f, 0),
+                MinSize = new Size(128, 128),
+                MaxSize = new Size(256, 256)
+            });
 
             #endregion
 
             #region Добавление объектов Asteroid.
 
             for (var i = 0; i < 20; i++)
-                _asteroids.Add(new Asteroid(new Vector2(R.Next(Width), R.Next(Height)), new Vector2(5, 10), new Size(30, 30)));
-                
+                _asteroids.Add(new Asteroid(new Vector2(), new Vector2(), new Size())
+                {
+                    MinDir = new Vector2(120f, 20f),
+                    MaxDir = new Vector2(160f, 80f),
+                    MinSize = new Size(32, 32),
+                    MaxSize = new Size(64, 64)
+                });
+
+            #endregion
+
+
+            #region Активизация объектов.
+
+            // Звезды и планета.
+            foreach (var obj in _objs)
+                obj.Active = true;
+
+            // Астероиды.
+            foreach (var a in _asteroids)
+                a.Active = true;
+
             #endregion
         }
 

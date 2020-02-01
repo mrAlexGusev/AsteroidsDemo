@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
-    class Planet : BaseObject, ISprite
+    class Planet : BaseObject, ISprite, IRandomDirAndSize
     {
         /// <summary>
         /// Инициализация объекта Planet.
@@ -33,6 +33,8 @@ namespace AsteroidsDemo
 
             if (!(Pos.X < 0 - Size.Width)) return;
 
+            SetRandomDisAndSize();
+
             Pos.X = Game.Width + Size.Width;
             Pos.Y = Game.R.Next(Game.Height - Size.Height);
         }
@@ -56,6 +58,57 @@ namespace AsteroidsDemo
                 Resources.GasGiant,
                 Resources.Sun
             };
+        }
+
+         /// <summary>
+        /// Минимальная скорость объекта Planet.
+        /// </summary>
+        public Vector2 MinDir { get; set; }
+
+        /// <summary>
+        /// Максимальная скорость объекта Planet.
+        /// </summary>
+        public Vector2 MaxDir { get; set; }
+
+        /// <summary>
+        /// Минимальный размер объекта Planet.
+        /// </summary>
+        public Size MinSize { get; set; }
+
+        /// <summary>
+        /// Максимальный размер объекта Planet.
+        /// </summary>
+        public Size MaxSize { get; set; }
+
+        /// <summary>
+        /// Задает случайное направление и размер объекта Planet.
+        /// </summary>
+        public void SetRandomDisAndSize()
+        {
+            // При вызове метода будем изменять картинку планеты.
+            Sprite = Sprites[Game.R.Next(Sprites.Length)];
+
+            // Планета движется только справа налево.
+
+            Dir.X = Game.R.Next((int)MinDir.X, (int)MaxDir.X);
+
+            // Для размера планеты возьмем случайный коэфициент умноженный на
+            // максимально возможный размер планеты.
+
+            Size.Width = (int)(Dir.X / MaxDir.X * MaxSize.Width);
+            Size.Width = Size.Width < MinSize.Width ? MinSize.Width : Size.Width;
+
+            Size.Height = (int)(Dir.X / MaxDir.X * MaxSize.Height);
+            Size.Height = Size.Height < MinSize.Height ? MinSize.Height : Size.Height;
+        }
+
+        /// <summary>
+        /// При активации устанавливает первоначальные случайные скорость и размер объекта Planet.
+        /// </summary>
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            SetRandomDisAndSize();
         }
     }
 }

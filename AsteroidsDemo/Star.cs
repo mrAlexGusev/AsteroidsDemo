@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
-    class Star : BaseObject, ISprite
+    class Star : BaseObject, ISprite, IRandomDirAndSize
     {
         /// <summary>
         /// Инициализация объекта Star.
@@ -41,5 +41,53 @@ namespace AsteroidsDemo
         /// Рисуемый объект Image объекта Star.
         /// </summary>
         public Bitmap Sprite { get; set; }
+
+        /// <summary>
+        /// Минимальная скорость объекта Star.
+        /// </summary>
+        public Vector2 MinDir { get; set; }
+
+        /// <summary>
+        /// Максимальная скорость объекта Star.
+        /// </summary>
+        public Vector2 MaxDir { get; set; }
+
+        /// <summary>
+        /// Минимальный размер объекта Star.
+        /// </summary>
+        public Size MinSize { get; set; }
+
+        /// <summary>
+        /// Максимальный размер объекта Star.
+        /// </summary>
+        public Size MaxSize { get; set; }
+
+        /// <summary>
+        /// Задает случайное направление и размер объекта Star.
+        /// </summary>
+        public void SetRandomDisAndSize()
+        {
+            // Звезда движется только справа налево.
+
+            Dir.X = Game.R.Next((int)MinDir.X, (int)MaxDir.X);
+
+            // Для размера звезды возьмем случайный коэфициент умноженный на
+            // максимально возможный размер звезды.
+
+            Size.Width = (int)(Dir.X / MaxDir.X * MaxSize.Width);
+            Size.Width = Size.Width < MinSize.Width ? MinSize.Width : Size.Width;
+
+            Size.Height = (int)(Dir.X / MaxDir.X * MaxSize.Height);
+            Size.Height = Size.Height < MinSize.Height ? MinSize.Height : Size.Height;
+        }
+
+        /// <summary>
+        /// При активации устанавливает первоначальные случайные скорость и размер объекта Star.
+        /// </summary>
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            SetRandomDisAndSize();
+        }
     }
 }
