@@ -35,7 +35,10 @@ namespace AsteroidsDemo
 
             // Астеройд вышел за границу по оси Х
             if (Pos.X < 0 - Size.Width)
-                Pos.X = Game.Width + Size.Width;
+            {
+                SetRandomDisAndSize();
+                return;
+            }
 
             // Астеройд вышел за границу по оси Y
             if (Pos.Y < 0 - Size.Height)
@@ -63,6 +66,63 @@ namespace AsteroidsDemo
                 Resources.Asteroid5,
                 Resources.Asteroid6
             };
+        }
+
+        /// <summary>
+        /// Минимальная скорость объекта Asteroid.
+        /// </summary>
+        public Vector2 MinDir { get; set; }
+
+        /// <summary>
+        /// Максимальная скорость объекта Asteroid.
+        /// </summary>
+        public Vector2 MaxDir { get; set; }
+
+        /// <summary>
+        /// Минимальный размер объекта Asteroid.
+        /// </summary>
+        public Size MinSize { get; set; }
+
+        /// <summary>
+        /// Максимальный размер объекта Asteroid.
+        /// </summary>
+        public Size MaxSize { get; set; }
+
+        /// <summary>
+        /// Задает случайное направление и размер объекта Asteroid.
+        /// </summary>
+        public void SetRandomDisAndSize()
+        {
+            // Первоначальные координаты Астероида.
+
+            Pos.X = Game.Width + Size.Width;
+            Pos.Y = Game.R.Next(Game.Height - Size.Height);
+
+            // Астероид движется справо налево по оси Х и
+            // сверху вниз или снизу вверх по оси Y.
+
+            Dir.X = Game.R.Next((int)MinDir.X, (int)MaxDir.X);
+            Dir.Y = Game.R.Next((int)MinDir.Y, (int)MaxDir.Y);
+
+            Dir.Y *= Game.R.Next(0, 2) == 1 ? -1 : 1;
+
+            // Для размера астероида возьмем случайный коэфициент умноженный на
+            // максимально возможный размер астероида.
+
+            Size.Width = (int)(Dir.X / MaxDir.X * MaxSize.Width);
+            Size.Width = Size.Width < MinSize.Width ? MinSize.Width : Size.Width;
+
+            Size.Height = (int)(Dir.X / MaxDir.X * MaxSize.Height);
+            Size.Height = Size.Height < MinSize.Height ? MinSize.Height : Size.Height;
+        }
+
+        /// <summary>
+        /// При активации устанавливает первоначальные случайные скорость и размер объекта Asteroid.
+        /// </summary>
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            SetRandomDisAndSize();
         }
     }
 }
