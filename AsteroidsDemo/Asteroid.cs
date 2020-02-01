@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
-    class Asteroid : BaseObject, ISprite
+    class Asteroid : BaseObject, ISprite, IRandomDirAndSize, ICollision
     {
         /// <summary>
         /// Инициализация объекта Asteroid.
@@ -124,5 +124,19 @@ namespace AsteroidsDemo
             base.OnEnable();
             SetRandomDisAndSize();
         }
+
+        /// <summary>
+        ///  Задает область столкновения.
+        ///  Подгоняем размер, т.к. астероид занимает не всю область картинки.
+        /// </summary>
+        public Rectangle Rect => new Rectangle((int)(Pos.X + Size.Width * 0.15),
+            (int)(Pos.Y + Size.Height * 0.15), (int)(Size.Width * 0.7), (int)(Size.Height * 0.7));
+
+        /// <summary>
+        /// Метод проверки столкновения объектов.
+        /// </summary>
+        /// <param name="o"> Другой объект. </param>
+        /// <returns></returns>
+        public bool Collision(ICollision o) => o.Rect.IntersectsWith(Rect);
     }
 }
