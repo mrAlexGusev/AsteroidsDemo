@@ -64,7 +64,7 @@ namespace AsteroidsDemo
             set
             {
                 if (value.Width < 0 || value.Height < 0)
-                    throw new GameObjectException("Недопустимый размер объекта");
+                    throw new GameObjectException("Недопустимый размер объекта Star.");
 
                 _minSize = value;
             }
@@ -79,7 +79,7 @@ namespace AsteroidsDemo
             set
             {
                 if (value.Width < 0 || value.Height < 0)
-                    throw new GameObjectException("Недопустимый размер объекта");
+                    throw new GameObjectException("Недопустимый размер объекта Star.");
 
                 _maxSize = value;
             }
