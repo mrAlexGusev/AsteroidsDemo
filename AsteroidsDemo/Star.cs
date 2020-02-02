@@ -3,6 +3,9 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
+    /// <summary>
+    /// Класс, отвечающий за создание звезд.
+    /// </summary>
     class Star : BaseObject, ISprite, IRandomDirAndSize
     {
         /// <summary>
@@ -55,12 +58,32 @@ namespace AsteroidsDemo
         /// <summary>
         /// Минимальный размер объекта Star.
         /// </summary>
-        public Size MinSize { get; set; }
+        public Size MinSize
+        {
+            get => _minSize;
+            set
+            {
+                if (value.Width < 0 || value.Height < 0)
+                    throw new GameObjectException("Недопустимый размер объекта");
+
+                _minSize = value;
+            }
+        }
 
         /// <summary>
         /// Максимальный размер объекта Star.
         /// </summary>
-        public Size MaxSize { get; set; }
+        public Size MaxSize
+        {
+            get => _maxSize;
+            set
+            {
+                if (value.Width < 0 || value.Height < 0)
+                    throw new GameObjectException("Недопустимый размер объекта");
+
+                _maxSize = value;
+            }
+        }
 
         /// <summary>
         /// Задает случайное направление и размер объекта Star.
@@ -89,5 +112,16 @@ namespace AsteroidsDemo
             base.OnEnable();
             SetRandomDisAndSize();
         }
+
+        /// <summary>
+        /// Поле, хранящее в себе минимальный размер объекта Star.
+        /// </summary>
+        private Size _minSize;
+
+        /// <summary>
+        /// Поле, хранящее в себе максимальный размер объекта Star.
+        /// </summary>
+        private Size _maxSize;
+        
     }
 }
