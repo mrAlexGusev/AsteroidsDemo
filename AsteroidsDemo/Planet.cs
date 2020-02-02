@@ -3,6 +3,9 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
+    /// <summary>
+    /// Класс, отвечающий за создание планет.
+    /// </summary>
     class Planet : BaseObject, ISprite, IRandomDirAndSize
     {
         /// <summary>
@@ -73,12 +76,32 @@ namespace AsteroidsDemo
         /// <summary>
         /// Минимальный размер объекта Planet.
         /// </summary>
-        public Size MinSize { get; set; }
+        public Size MinSize
+        {
+            get => _minSize;
+            set
+            {
+                if (value.Width < 0 || value.Height < 0)
+                    throw new GameObjectException("Недопустимый размер объекта Planet.");
+
+                _minSize = value;
+            }
+        }
 
         /// <summary>
         /// Максимальный размер объекта Planet.
         /// </summary>
-        public Size MaxSize { get; set; }
+        public Size MaxSize
+        {
+            get => _maxSize;
+            set
+            {
+                if (value.Width < 0 || value.Height < 0)
+                    throw new GameObjectException("Недопустимый размер объекта Planet.");
+
+                _maxSize = value;
+            }
+        }
 
         /// <summary>
         /// Задает случайное направление и размер объекта Planet.
@@ -110,5 +133,15 @@ namespace AsteroidsDemo
             base.OnEnable();
             SetRandomDisAndSize();
         }
+
+        /// <summary>
+        /// Поле, хранящее в себе минимальный размер объекта Planet.
+        /// </summary>
+        private Size _minSize;
+
+        /// <summary>
+        /// Поле, хранящее в себе максимальный размер объекта Planet.
+        /// </summary>
+        private Size _maxSize;
     }
 }
