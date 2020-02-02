@@ -3,9 +3,6 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
-    /// <summary>
-    /// Класс, отвечающий за создание астероидов.
-    /// </summary>
     class Asteroid : BaseObject, ISprite, IRandomDirAndSize, ICollision
     {
         /// <summary>
@@ -84,32 +81,12 @@ namespace AsteroidsDemo
         /// <summary>
         /// Минимальный размер объекта Asteroid.
         /// </summary>
-        public Size MinSize
-        {
-            get => _minSize;
-            set
-            {
-                if (value.Width < 0 || value.Height < 0)
-                    throw new GameObjectException("Недопустимый размер объекта Asteroid.");
-
-                _minSize = value;
-            }
-        }
+        public Size MinSize { get; set; }
 
         /// <summary>
         /// Максимальный размер объекта Asteroid.
         /// </summary>
-        public Size MaxSize
-        {
-            get => _maxSize;
-            set
-            {
-                if (value.Width < 0 || value.Height < 0)
-                    throw new GameObjectException("Недопустимый размер объекта Asteroid.");
-
-                _maxSize = value;
-            }
-        }
+        public Size MaxSize { get; set; }
 
         /// <summary>
         /// Задает случайное направление и размер объекта Asteroid.
@@ -161,15 +138,5 @@ namespace AsteroidsDemo
         /// <param name="o"> Другой объект. </param>
         /// <returns></returns>
         public bool Collision(ICollision o) => o.Rect.IntersectsWith(Rect);
-
-        /// <summary>
-        /// Поле, хранящее в себе минимальный размер объекта Asteroid.
-        /// </summary>
-        private Size _minSize;
-
-        /// <summary>
-        /// Поле, хранящее в себе максимальный размер объекта Asteroid.
-        /// </summary>
-        private Size _maxSize;
     }
 }
