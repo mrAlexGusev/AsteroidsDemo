@@ -193,6 +193,16 @@ namespace AsteroidsDemo {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Repair {
+            get {
+                object obj = ResourceManager.GetObject("Repair", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap SpaceShip {
             get {
                 object obj = ResourceManager.GetObject("SpaceShip", resourceCulture);

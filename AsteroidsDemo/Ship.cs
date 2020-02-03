@@ -79,6 +79,9 @@ namespace AsteroidsDemo
             if (KeysHandler.IsPressed(Keys.Space)) Shoot();
         }
 
+        /// <summary>
+        /// Метод задающий начальные параметры при активации объекта Ship.
+        /// </summary>
         protected override void OnEnable()
         {
             Energy = MaxEnergy;
@@ -127,6 +130,9 @@ namespace AsteroidsDemo
         /// </summary>
         private float _lastShotCounter;
 
+        /// <summary>
+        /// Выстрел снарядов.
+        /// </summary>
         public void Shoot()
         {
             if (ShotsDelay < _lastShotCounter)
