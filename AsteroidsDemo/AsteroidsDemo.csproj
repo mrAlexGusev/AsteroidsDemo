@@ -63,6 +63,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Ship.cs" />
     <Compile Include="Star.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Bullet.png" />
+    <None Include="Resources\SpaceShip.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Asteroid1.png" />

@@ -86,6 +86,11 @@ namespace AsteroidsDemo
         private static List<Asteroid> _asteroids;
 
         /// <summary>
+        /// Объект корабля.
+        /// </summary>
+        private static Ship _ship;
+
+        /// <summary>
         /// Загрузка игровых объектов.
         /// </summary>
         private static void Load()
@@ -118,6 +123,12 @@ namespace AsteroidsDemo
 
             #endregion
 
+            #region Добавление объекта Ship.
+
+            _ship = new Ship(new Vector2(), new Vector2(), new Size(168, 84));
+
+            #endregion
+
             #region Добавление объектов Asteroid.
 
             for (var i = 0; i < 20; i++)
@@ -142,6 +153,9 @@ namespace AsteroidsDemo
             foreach (var a in _asteroids)
                 a.Active = true;
 
+            // Корабль.
+            _ship.Active = true;
+
             #endregion
         }
 
@@ -157,6 +171,8 @@ namespace AsteroidsDemo
 
             foreach (var a in _asteroids)
                 a.Draw();
+
+            if (_ship.Active) _ship.Draw();
 
             Buffer.Render();
         }
