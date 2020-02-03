@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AsteroidsDemo
 {
@@ -55,6 +56,9 @@ namespace AsteroidsDemo
         /// </summary>
         public override void Update()
         {
+            // Устанавливаем направление объекта.
+            SetDirection();
+
             // Перемещаем объект.
             Pos.X += Dir.X;
             Pos.Y += Dir.Y;
@@ -71,5 +75,31 @@ namespace AsteroidsDemo
             Pos.X = 0;
             Pos.Y = Game.Height / 2 - Size.Height / 2;
         }
+
+        /// <summary>
+        /// Максимальная скорость объекта.
+        /// </summary>
+        public Vector2 MaxDir { get; set; }
+
+        /// <summary>
+        /// Метод перемещения объекта.
+        /// </summary>
+        private void SetDirection()
+        {
+            if (KeysHandler.IsPressed(Keys.W) || KeysHandler.IsPressed(Keys.Up))
+                Dir.Y = -MaxDir.Y;
+            else if (KeysHandler.IsPressed(Keys.S) || KeysHandler.IsPressed(Keys.Down))
+                Dir.Y = MaxDir.Y;
+            else
+                Dir.Y = 0;
+
+            if (KeysHandler.IsPressed(Keys.A) || KeysHandler.IsPressed(Keys.Left))
+                Dir.X = -MaxDir.X;
+            else if (KeysHandler.IsPressed(Keys.D) || KeysHandler.IsPressed(Keys.Right))
+                Dir.X = MaxDir.X;
+            else
+                Dir.X = 0;
+        }
+
     }
 }

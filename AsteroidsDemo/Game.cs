@@ -49,6 +49,10 @@ namespace AsteroidsDemo
             Width = form.ClientSize.Width;
             Height = form.ClientSize.Height;
 
+            // Подписка на события формы.
+            form.KeyDown += KeysHandler.KeyDown;
+            form.KeyUp += KeysHandler.KeyUp;
+
             // Создание графического элемента и буфера.
             var g = form.CreateGraphics();
             _context = BufferedGraphicsManager.Current;
@@ -125,7 +129,10 @@ namespace AsteroidsDemo
 
             #region Добавление объекта Ship.
 
-            _ship = new Ship(new Vector2(), new Vector2(), new Size(168, 84));
+            _ship = new Ship(new Vector2(), new Vector2(), new Size(168, 84))
+            {
+                MaxDir = new Vector2(200f, 200f)
+            };
 
             #endregion
 
@@ -187,6 +194,8 @@ namespace AsteroidsDemo
 
             foreach (var a in _asteroids)
                 a.Update();
+
+            if (_ship.Active) _ship.Update();
         }
     }
 }

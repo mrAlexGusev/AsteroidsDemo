@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace AsteroidsDemo
@@ -47,7 +46,7 @@ namespace AsteroidsDemo
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        private static bool IsPressed(Keys key)
+        public static bool IsPressed(Keys key)
         {
             return _keys.Contains(key);
         }
