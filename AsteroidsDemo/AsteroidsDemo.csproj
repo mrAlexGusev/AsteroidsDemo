@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="Ship.cs" />
     <Compile Include="Star.cs" />
+    <Compile Include="UserInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -84,6 +85,7 @@
     <Content Include="Resources\GameOver.wav" />
     <Content Include="Resources\Hit.wav" />
     <Content Include="Resources\Laser.wav" />
+    <None Include="Resources\KenVector Future.ttf" />
     <None Include="Resources\RepairSound.wav" />
     <None Include="Resources\Repair.png" />
     <None Include="Resources\SpaceShip.png" />

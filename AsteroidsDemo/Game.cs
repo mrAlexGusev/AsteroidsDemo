@@ -32,6 +32,21 @@ namespace AsteroidsDemo
         /// </summary>
         private static readonly SoundPlayer HitSound;
 
+        /// <summary>
+        /// Количество очков.
+        /// </summary>
+        public static int Score;
+
+        /// <summary>
+        /// Ожидание следующего уровня.
+        /// </summary>
+        public static bool WaitNextLevel;
+
+        /// <summary>
+        /// Уровень игры.
+        /// </summary>
+        public static int Level;
+
         static Game()
         {
             R = new Random();
