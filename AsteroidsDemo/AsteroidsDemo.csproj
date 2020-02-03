@@ -54,6 +54,7 @@
     <Compile Include="ICollision.cs" />
     <Compile Include="IRandomDirAndSize.cs" />
     <Compile Include="ISprite.cs" />
+    <Compile Include="KeysHandler.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Planet.cs" />
     <Compile Include="Program.cs" />
