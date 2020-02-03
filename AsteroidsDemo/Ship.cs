@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+﻿using System.Drawing;
+using System.Media;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AsteroidsDemo
@@ -24,6 +20,7 @@ namespace AsteroidsDemo
         {
             Sprite = Resources.SpaceShip;
             _bulletSpawn = new Vector2(Size.Width * 0.82f, Size.Height * 0.48f);
+            _shotSound = new SoundPlayer(Resources.Laser);
         }
 
         /// <summary>
@@ -140,6 +137,8 @@ namespace AsteroidsDemo
                 _lastShotCounter = 0;
 
                 BulletPool.GetNext(_bulletSpawn + Pos);
+
+                _shotSound.Play();
             }
             else
             {
@@ -168,5 +167,10 @@ namespace AsteroidsDemo
             if (Energy > MaxEnergy) Energy = MaxEnergy;
             if (Energy < 0) Energy = 0;
         }
+
+        /// <summary>
+        /// Звук выстрела.
+        /// </summary>
+        private readonly SoundPlayer _shotSound;
     }
 }

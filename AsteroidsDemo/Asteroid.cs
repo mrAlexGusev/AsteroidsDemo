@@ -105,10 +105,7 @@ namespace AsteroidsDemo
                 Pos.Y = Game.R.Next(Game.Height - Size.Height);
 
             }
-
-            Pos.X = Game.Width + Size.Width;
-            Pos.Y = Game.R.Next(Game.Height - Size.Height);
-
+                        
             // Астероид движется справо налево по оси Х и
             // сверху вниз или снизу вверх по оси Y.
 
