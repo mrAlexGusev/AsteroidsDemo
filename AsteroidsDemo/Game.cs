@@ -47,6 +47,11 @@ namespace AsteroidsDemo
         /// </summary>
         public static int Level;
 
+        /// <summary>
+        /// Продолжительность паузы между уровнями.
+        /// </summary>
+        private static readonly int BetweenLevelDelay;
+
         static Game()
         {
             R = new Random();
@@ -55,6 +60,14 @@ namespace AsteroidsDemo
             RepairSound = new SoundPlayer(Resources.RepairSound);
             HitSound = new SoundPlayer(Resources.Hit);
             GameOverSound = new SoundPlayer(Resources.GameOver);
+
+            // Установка времени паузы.
+            BetweenLevelDelay = 3;
+
+            // Стартовые параметры.
+            WaitNextLevel = false;
+            Score = 0;
+            Level = 0;
 
             // Устанавливаем запись событий в консоль.
             Log.WriteLogEvent += Log.WriteToConsole;
@@ -93,6 +106,9 @@ namespace AsteroidsDemo
             FPS = 1000 / interval;
             _fpsCounter = 0;
 
+            // При запуске показываем обучение.
+            Tutorial = true;
+
             // Определение размера.
             Width = form.ClientSize.Width;
             Height = form.ClientSize.Height;
@@ -118,6 +134,8 @@ namespace AsteroidsDemo
 
             timer.Start();
             timer.Tick += Timer_Tick;
+
+            Log.WriteLine("Game initialised");
         }
 
         /// <summary>
@@ -144,6 +162,8 @@ namespace AsteroidsDemo
         /// Время последнего Update.
         /// </summary>
         private static DateTime _lastUpdate;
+
+        private static DateTime _loadStartedTime;
 
         /// <summary>
         /// Вызовы методов по таймеру.
@@ -176,6 +196,11 @@ namespace AsteroidsDemo
         /// </summary>
         public static Repair Repair;
 
+        /// <summary>
+        /// Объект пользовательского интерфейса.
+        /// </summary>
+        public static UserInterface UI;
+        
         /// <summary>
         /// Загрузка игровых объектов.
         /// </summary>
@@ -227,17 +252,11 @@ namespace AsteroidsDemo
             BulletPool.Speed = 600f;
 
             #endregion
+            
+            #region UI.
 
-            #region Добавление объектов Asteroid.
-
-            for (var i = 0; i < 20; i++)
-                Asteroids.Add(new Asteroid(new Vector2(), new Vector2(), new Size())
-                {
-                    MinDir = new Vector2(120f, 20f),
-                    MaxDir = new Vector2(160f, 80f),
-                    MinSize = new Size(32, 32),
-                    MaxSize = new Size(64, 64)
-                });
+            // Создаем объект выводящий информацию о корабле.
+            UI = new UserInterface(new Vector2(), new Vector2(), new Size());
 
             #endregion
 
@@ -247,13 +266,12 @@ namespace AsteroidsDemo
             // Звезды и планета.
             foreach (var obj in _objs)
                 obj.Active = true;
-
-            // Астероиды.
-            foreach (var a in Asteroids)
-                a.Active = true;
-
+            
             // Корабль.
             Ship.Active = true;
+
+            // Интерфейс
+            UI.Active = true;
 
             #endregion
         }
@@ -290,6 +308,8 @@ namespace AsteroidsDemo
             
             if (Ship.Active) Ship.Draw();
 
+            UI.Draw();
+
             Buffer.Render();
         }
 
@@ -318,6 +338,9 @@ namespace AsteroidsDemo
 
                     Repair.Active = false;
                     Ship.Active = true;
+
+                    Score = 0;
+                    Level = 0;
                 }
 
                 #endregion
@@ -326,6 +349,37 @@ namespace AsteroidsDemo
             // При обучении отключаем астероиды и рем. комплекты.
             if (!Tutorial)
             {
+                // Проверяем, нужно ли включить астероиды.
+                if (Asteroids.Count(a => a.Active) == 0)
+                {
+                    if (WaitNextLevel)
+                    {
+                        WaitNextLevel = (DateTime.Now - _loadStartedTime).TotalSeconds <= BetweenLevelDelay;
+
+                        if (!WaitNextLevel) ActivateAsteroid();
+                    }
+                    else
+                    {
+                        Level++;
+                        LoadLevel();
+                    }
+                }
+
+                // Обновляем рем. комплект.
+                // Если астероидов менее 5, то рем. комплект не активируем.
+                if (!WaitNextLevel && Asteroids.Count(a => a.Active) > 5) Repair.Active = true;
+                if (Repair.Active) Repair.Update();
+
+                // Проверяем столкновение рем. комплекта и коробля.
+                if(Ship.Active && Repair.Active && Ship.Collision(Repair))
+                {
+                    Ship.ChangeEnergy(5);
+                    Repair.Active = false;
+                    RepairSound.Play();
+
+                    Log.WriteLine("Ship is repaid.");
+                }
+
                 // Обновляем активные астероиды.
                 foreach (var asteroid in Asteroids.Where(a => a.Active))
                 {
@@ -335,29 +389,62 @@ namespace AsteroidsDemo
 
                     asteroid.Active = false;
 
-                    //
+                    // Получаем урон в зависимости от размера астероида.
                     Ship.ChangeEnergy(-10 * asteroid.Size.Width / asteroid.MaxSize.Width);
 
-                    Log.WriteLine("Корабль столкнулся с астероидом.");
+                    Log.WriteLine("Ship is hit by asteroid.");
 
                     if (Ship.Energy == 0)
                     {
                         Ship.Active = false;
                         GameOverSound.Play();
 
-                        Log.WriteLine("Корабль уничтожен.");
+                        Log.WriteLine("Ship is destroyed.");
                         break;
                     }
 
                     HitSound.Play();
                 }
                     
-            }
-                        
+            }                        
 
             if (Ship.Active) Ship.Update();
+            UI.Draw();
 
             _lastUpdate = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Создаем астероиды для уровня.
+        /// </summary>
+        private static void LoadLevel()
+        {
+            // Устанавливаем паузу.
+            WaitNextLevel = true;
+            _loadStartedTime = DateTime.Now;
+
+            // Количество астероидов, которые необходимо добавить.
+            var needToAdd = 15 + Level * 5 - Asteroids.Count;
+
+            for (var i = 0; i < needToAdd; i++)
+                Asteroids.Add(new Asteroid(new Vector2(), new Vector2(), new Size())
+                {
+                    MinDir = new Vector2(120f, 20f),
+                    MaxDir = new Vector2(160f, 80f),
+                    MinSize = new Size(32, 32),
+                    MaxSize = new Size(64, 64)
+                });
+        }
+
+        /// <summary>
+        /// Активируем необходимое количество астероидов.
+        /// </summary>
+        private static void ActivateAsteroid()
+        {
+            foreach (var a in Asteroids)
+                a.Active = true;
+
+            Log.WriteLine($"Level {Level} started.");
         }
     }
 }

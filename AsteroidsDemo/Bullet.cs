@@ -42,12 +42,13 @@ namespace AsteroidsDemo
 
             foreach(var asteroid in Game.Asteroids.Where(a => a.Active).Where(Collision))
             {
+                Game.Score++;
 
                 Active = false;
                 asteroid.Active = false;
                 _explosionSound.Play();
 
-                Log.WriteLine("Астероид уничтожен.");
+                Log.WriteLine("Asteroid is destroyed.");
             }
 
             // Если пуля за пределами, то уничтожаем.

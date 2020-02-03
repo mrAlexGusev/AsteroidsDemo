@@ -9,7 +9,7 @@ namespace AsteroidsDemo
     /// <summary>
     /// Класс пользовательского интерфейса.
     /// </summary>
-    class UserInterface : BaseObject
+    public class UserInterface : BaseObject
     {
         /// <summary>
         /// Коллекция семейств шрифтов.
