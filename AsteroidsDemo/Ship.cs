@@ -81,6 +81,7 @@ namespace AsteroidsDemo
 
         protected override void OnEnable()
         {
+            Energy = MaxEnergy;
             _lastShotCounter = ShotsDelay + 1;
             Pos.X = 0;
             Pos.Y = Game.Height / 2 - Size.Height / 2;
@@ -138,6 +139,28 @@ namespace AsteroidsDemo
             {
                 _lastShotCounter += Game.DeltaTime;
             }
+        }
+
+        /// <summary>
+        /// Максимальное количество энергии объекта Ship.
+        /// </summary>
+        public int MaxEnergy { get; set; }
+
+        /// <summary>
+        /// Количество энергии объекта Ship.
+        /// </summary>
+        public int Energy { get; private set; }
+
+        /// <summary>
+        /// Изменение количества энергии объекта Ship.
+        /// </summary>
+        /// <param name="n"></param>
+        public void ChangeEnergy(int n)
+        {
+            Energy += n;
+
+            if (Energy > MaxEnergy) Energy = MaxEnergy;
+            if (Energy < 0) Energy = 0;
         }
     }
 }

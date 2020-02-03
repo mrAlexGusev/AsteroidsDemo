@@ -14,6 +14,7 @@ namespace AsteroidsDemo
         public Asteroid(Vector2 pos, Vector2 dir, Size size) : base(pos, dir, size)
         {
             Sprite = Sprites[Game.R.Next(Sprites.Length)];
+            _destroyed = true;
         }
 
         /// <summary>
@@ -93,7 +94,17 @@ namespace AsteroidsDemo
         /// </summary>
         public void SetRandomDirAndSize()
         {
-            // Первоначальные координаты Астероида.
+            if (_destroyed)
+            {
+                Pos.X = Game.R.Next(Game.Width - Size.Width) + Game.Width;
+                Pos.Y = Game.R.Next(Game.Height - Size.Height);
+            }
+            else
+            {
+                Pos.X = Game.Width + Size.Width;
+                Pos.Y = Game.R.Next(Game.Height - Size.Height);
+
+            }
 
             Pos.X = Game.Width + Size.Width;
             Pos.Y = Game.R.Next(Game.Height - Size.Height);
@@ -123,6 +134,7 @@ namespace AsteroidsDemo
         {
             base.OnEnable();
             SetRandomDirAndSize();
+            _destroyed = false;
         }
 
         /// <summary>
@@ -138,5 +150,16 @@ namespace AsteroidsDemo
         /// <param name="o"> Другой объект. </param>
         /// <returns></returns>
         public bool Collision(ICollision o) => o.Rect.IntersectsWith(Rect);
+
+        /// <summary>
+        /// Поле, показывающее можно ли уничтожить объект.
+        /// </summary>
+        private bool _destroyed;
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            _destroyed = true;
+        }
     }
 }
