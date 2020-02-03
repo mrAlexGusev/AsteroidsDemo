@@ -30,13 +30,13 @@ namespace AsteroidsDemo
         public override void Update()
         {
             // Астероид двигается
-            Pos.X -= Dir.X;
-            Pos.Y += Dir.Y;
+            Pos.X -= Dir.X * Game.DeltaTime;
+            Pos.Y += Dir.Y * Game.DeltaTime;
 
             // Астеройд вышел за границу по оси Х
             if (Pos.X < 0 - Size.Width)
             {
-                SetRandomDisAndSize();
+                SetRandomDirAndSize();
                 return;
             }
 
@@ -91,7 +91,7 @@ namespace AsteroidsDemo
         /// <summary>
         /// Задает случайное направление и размер объекта Asteroid.
         /// </summary>
-        public void SetRandomDisAndSize()
+        public void SetRandomDirAndSize()
         {
             // Первоначальные координаты Астероида.
 
@@ -122,7 +122,7 @@ namespace AsteroidsDemo
         protected override void OnEnable()
         {
             base.OnEnable();
-            SetRandomDisAndSize();
+            SetRandomDirAndSize();
         }
 
         /// <summary>

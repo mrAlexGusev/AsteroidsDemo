@@ -35,7 +35,7 @@ namespace AsteroidsDemo
         public override void Update()
         {
             // Пуля летит слева направо.
-            Pos.X += Dir.X;
+            Pos.X += Dir.X * Game.DeltaTime;
 
             // Если пуля за пределами, то уничтожаем.
             if (Pos.X > Game.Width - Size.Width) Active = false;

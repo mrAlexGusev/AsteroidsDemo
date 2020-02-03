@@ -61,8 +61,8 @@ namespace AsteroidsDemo
             SetDirection();
 
             // Перемещаем объект.
-            Pos.X += Dir.X;
-            Pos.Y += Dir.Y;
+            Pos.X += Dir.X * Game.DeltaTime;
+            Pos.Y += Dir.Y * Game.DeltaTime;
 
             // Если объект вышел за границу, то возвращаем обратно.
             if (Pos.X < -Size.Width * 0.3) Pos.X = (int)(-Size.Width * 0.3);

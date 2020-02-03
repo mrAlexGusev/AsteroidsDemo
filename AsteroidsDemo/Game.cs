@@ -45,6 +45,9 @@ namespace AsteroidsDemo
         /// <param name="v"></param>
         public static void Init(Form form, int interval)
         {
+            FPS = 1000 / interval;
+            _fpsCounter = 0;
+
             // Определение размера.
             Width = form.ClientSize.Width;
             Height = form.ClientSize.Height;
@@ -64,9 +67,38 @@ namespace AsteroidsDemo
             // Установка таймера.
             var timer = new Timer { Interval = interval };
 
+            _lastFrame = DateTime.Now;
+
+            _lastUpdate = DateTime.Now;
+
             timer.Start();
             timer.Tick += Timer_Tick;
         }
+
+        /// <summary>
+        /// Время между кадрами в зависимости от заданного FPS.
+        /// </summary>
+        public static float DeltaTime { get; private set; }
+
+        /// <summary>
+        /// Количество кадров в секунду.
+        /// </summary>
+        public static int FPS { get; set; }
+
+        /// <summary>
+        /// Время отрисовки последнего кадра.
+        /// </summary>
+        private static DateTime _lastFrame;
+
+        /// <summary>
+        /// Счетчик FPS.
+        /// </summary>
+        private static int _fpsCounter;
+
+        /// <summary>
+        /// Время последнего Update.
+        /// </summary>
+        private static DateTime _lastUpdate;
 
         /// <summary>
         /// Вызовы методов по таймеру.
@@ -171,6 +203,17 @@ namespace AsteroidsDemo
         /// </summary>
         public static void Draw()
         {
+            if((DateTime.Now - _lastFrame).TotalMilliseconds <= 1000)
+            {
+                _fpsCounter++;
+            }
+            else
+            {
+                FPS = _fpsCounter;
+                _fpsCounter = 0;
+                _lastFrame = DateTime.Now;
+            }
+
             Buffer.Graphics.Clear(Color.Black);
 
             foreach (var obj in _objs)
@@ -189,6 +232,9 @@ namespace AsteroidsDemo
         /// </summary>
         private static void Update()
         {
+            // Время расчета между двумя кадрами.
+            DeltaTime = (float)(DateTime.Now - _lastUpdate).TotalMilliseconds / 1000;
+
             foreach (var obj in _objs)
                 obj.Update();
 
@@ -196,6 +242,8 @@ namespace AsteroidsDemo
                 a.Update();
 
             if (_ship.Active) _ship.Update();
+
+            _lastUpdate = DateTime.Now;
         }
     }
 }
