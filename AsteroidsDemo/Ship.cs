@@ -50,6 +50,9 @@ namespace AsteroidsDemo
         public override void Draw()
         {
             Game.Buffer.Graphics.DrawImage(Sprite, Pos.X, Pos.Y, Size.Width, Size.Height);
+
+            // Выводим пул снарядов.
+            BulletPool.Draw();
         }
 
         /// <summary>
@@ -57,6 +60,9 @@ namespace AsteroidsDemo
         /// </summary>
         public override void Update()
         {
+            // Обновляем пул снарядов.
+            BulletPool.Update();
+
             // Устанавливаем направление объекта.
             SetDirection();
 
@@ -69,10 +75,13 @@ namespace AsteroidsDemo
             if (Pos.X > Game.Width - Size.Width) Pos.X = Game.Width - Size.Width;
             if (Pos.Y < 0) Pos.Y = 0;
             if (Pos.Y > Game.Height - Size.Height) Pos.Y = Game.Height - Size.Height;
+
+            if (KeysHandler.IsPressed(Keys.Space)) Shoot();
         }
 
         protected override void OnEnable()
         {
+            _lastShotCounter = ShotsDelay + 1;
             Pos.X = 0;
             Pos.Y = Game.Height / 2 - Size.Height / 2;
         }
@@ -107,5 +116,28 @@ namespace AsteroidsDemo
         /// </summary>
         private readonly Vector2 _bulletSpawn;
 
+        /// <summary>
+        /// Время между выстрелами в секундах.
+        /// </summary>
+        public float ShotsDelay { get; set; }
+
+        /// <summary>
+        /// Время последнего выстрела.
+        /// </summary>
+        private float _lastShotCounter;
+
+        public void Shoot()
+        {
+            if (ShotsDelay < _lastShotCounter)
+            {
+                _lastShotCounter = 0;
+
+                BulletPool.GetNext(_bulletSpawn + Pos);
+            }
+            else
+            {
+                _lastShotCounter += Game.DeltaTime;
+            }
+        }
     }
 }

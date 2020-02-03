@@ -163,8 +163,11 @@ namespace AsteroidsDemo
 
             _ship = new Ship(new Vector2(), new Vector2(), new Size(168, 84))
             {
-                MaxDir = new Vector2(200f, 200f)
+                MaxDir = new Vector2(200f, 200f),
+                ShotsDelay = 0.2f
             };
+
+            BulletPool.Speed = 600f;
 
             #endregion
 
