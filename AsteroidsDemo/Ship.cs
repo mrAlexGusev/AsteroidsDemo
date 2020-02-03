@@ -23,6 +23,7 @@ namespace AsteroidsDemo
         public Ship(Vector2 pos, Vector2 dir, Size size) : base(pos, dir, size)
         {
             Sprite = Resources.SpaceShip;
+            _bulletSpawn = new Vector2(Size.Width * 0.82f, Size.Height * 0.48f);
         }
 
         /// <summary>
@@ -100,6 +101,11 @@ namespace AsteroidsDemo
             else
                 Dir.X = 0;
         }
+
+        /// <summary>
+        /// Место создания снаряда.
+        /// </summary>
+        private readonly Vector2 _bulletSpawn;
 
     }
 }
