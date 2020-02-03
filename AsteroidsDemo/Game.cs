@@ -13,9 +13,20 @@ namespace AsteroidsDemo
     {
         private static BufferedGraphicsContext _context;
 
+        /// <summary>
+        /// Включение режима обучения.
+        /// </summary>
+        public static bool Tutorial;
+
         static Game()
         {
             R = new Random();
+
+            // Устанавливаем запись событий в консоль.
+            Log.WriteLogEvent += Log.WriteToConsole;
+
+            // Устанавливаем запись событий в файл.
+            Log.WriteLogEvent += Log.WriteToFile;
         }
 
         /// <summary>
@@ -119,12 +130,17 @@ namespace AsteroidsDemo
         /// <summary>
         /// Коллекция астероидов.
         /// </summary>
-        private static List<Asteroid> _asteroids;
+        public static List<Asteroid> Asteroids;
 
         /// <summary>
         /// Объект корабля.
         /// </summary>
-        private static Ship _ship;
+        public static Ship Ship;
+
+        /// <summary>
+        /// Объект ремонтного комплекта.
+        /// </summary>
+        public static Repair Repair;
 
         /// <summary>
         /// Загрузка игровых объектов.
@@ -132,7 +148,7 @@ namespace AsteroidsDemo
         private static void Load()
         {
             _objs = new List<BaseObject>();
-            _asteroids = new List<Asteroid>();
+            Asteroids = new List<Asteroid>();
 
             #region Добавление объектов Star.
 
@@ -159,12 +175,19 @@ namespace AsteroidsDemo
 
             #endregion
 
+            #region Добавление объекта Repair.
+
+            Repair = new Repair(new Vector2(), new Vector2(120f, 0), new Size(48, 48));
+
+            #endregion
+
             #region Добавление объекта Ship.
 
-            _ship = new Ship(new Vector2(), new Vector2(), new Size(168, 84))
+            Ship = new Ship(new Vector2(), new Vector2(), new Size(168, 84))
             {
                 MaxDir = new Vector2(200f, 200f),
-                ShotsDelay = 0.2f
+                ShotsDelay = 0.2f,
+                MaxEnergy = 30
             };
 
             BulletPool.Speed = 600f;
@@ -174,7 +197,7 @@ namespace AsteroidsDemo
             #region Добавление объектов Asteroid.
 
             for (var i = 0; i < 20; i++)
-                _asteroids.Add(new Asteroid(new Vector2(), new Vector2(), new Size())
+                Asteroids.Add(new Asteroid(new Vector2(), new Vector2(), new Size())
                 {
                     MinDir = new Vector2(120f, 20f),
                     MaxDir = new Vector2(160f, 80f),
@@ -192,11 +215,11 @@ namespace AsteroidsDemo
                 obj.Active = true;
 
             // Астероиды.
-            foreach (var a in _asteroids)
+            foreach (var a in Asteroids)
                 a.Active = true;
 
             // Корабль.
-            _ship.Active = true;
+            Ship.Active = true;
 
             #endregion
         }
@@ -219,13 +242,19 @@ namespace AsteroidsDemo
 
             Buffer.Graphics.Clear(Color.Black);
 
-            foreach (var obj in _objs)
+            foreach (var obj in _objs.Where(o => o.Active))
                 obj.Draw();
 
-            foreach (var a in _asteroids)
-                a.Draw();
+            // При обучении отключаем астероиды и рем. комплекты.
+            if (!Tutorial)
+            {
+                if (Repair.Active) Repair.Draw();
 
-            if (_ship.Active) _ship.Draw();
+                foreach (var asteroid in Asteroids.Where(a => a.Active))
+                    asteroid.Draw();
+            }
+            
+            if (Ship.Active) Ship.Draw();
 
             Buffer.Render();
         }
@@ -241,10 +270,56 @@ namespace AsteroidsDemo
             foreach (var obj in _objs)
                 obj.Update();
 
-            foreach (var a in _asteroids)
-                a.Update();
+            // Выключаем обучение или перезапускаем игру.
+            if (KeysHandler.IsPressed(Keys.Enter))
+            {
+                Tutorial = false;
 
-            if (_ship.Active) _ship.Update();
+                #region Перезапуск игры.
+
+                if (!Ship.Active)
+                {
+                    foreach (var asteroid in Asteroids)
+                        asteroid.Active = false;
+
+                    Repair.Active = false;
+                    Ship.Active = true;
+                }
+
+                #endregion
+            }
+
+            // При обучении отключаем астероиды и рем. комплекты.
+            if (!Tutorial)
+            {
+                // Обновляем активные астероиды.
+                foreach (var asteroid in Asteroids.Where(a => a.Active))
+                {
+                    asteroid.Update();
+
+                    if (!Ship.Active || !Ship.Collision(asteroid)) continue;
+
+                    asteroid.Active = false;
+
+                    //
+                    Ship.ChangeEnergy(-10 * asteroid.Size.Width / asteroid.MaxSize.Width);
+
+                    Log.WriteLine("Корабль столкнулся с астероидом");
+
+                    if (Ship.Energy == 0)
+                    {
+                        Ship.Active = false;
+
+                        Log.WriteLine("Корабль уничтожен");
+                        break;
+                    }
+                    
+                }
+                    
+            }
+                        
+
+            if (Ship.Active) Ship.Update();
 
             _lastUpdate = DateTime.Now;
         }

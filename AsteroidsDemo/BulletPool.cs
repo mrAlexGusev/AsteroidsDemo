@@ -8,7 +8,7 @@ namespace AsteroidsDemo
     /// <summary>
     /// Пул снарядов.
     /// </summary>
-    static class BulletPool
+    internal static class BulletPool
     {
         /// <summary>
         /// Коллекция снарядов.

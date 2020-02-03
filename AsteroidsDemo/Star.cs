@@ -6,7 +6,7 @@ namespace AsteroidsDemo
     /// <summary>
     /// Класс, отвечающий за создание звезд.
     /// </summary>
-    class Star : BaseObject, ISprite, IRandomDirAndSize
+    public class Star : BaseObject, ISprite, IRandomDirAndSize
     {
         /// <summary>
         /// Инициализация объекта Star.

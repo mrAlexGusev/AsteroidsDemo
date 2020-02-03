@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
-    class Repair : BaseObject, ICollision, ISprite
+    public class Repair : BaseObject, ICollision, ISprite
     {
         /// <summary>
         /// Инициализация объекта Repair.
@@ -33,7 +33,10 @@ namespace AsteroidsDemo
         /// </summary>
         /// <param name="o"> Другой объект. </param>
         /// <returns></returns>
-        public bool Collision(ICollision o) => o.Rect.IntersectsWith(Rect);
+        public bool Collision(ICollision o)
+        {
+            return o.Rect.IntersectsWith(Rect);
+        }
 
         /// <summary>
         /// Метод вывода объекта Repair на экран.

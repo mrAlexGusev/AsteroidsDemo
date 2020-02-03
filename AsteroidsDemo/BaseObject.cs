@@ -64,6 +64,7 @@ namespace AsteroidsDemo
                 if (_active == value) return;
 
                 _active = value;
+
                 if (_active) OnEnable();
                 else OnDisable();
             }

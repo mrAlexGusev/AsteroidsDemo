@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
-    class Asteroid : BaseObject, ISprite, IRandomDirAndSize, ICollision
+    public class Asteroid : BaseObject, ISprite, IRandomDirAndSize, ICollision
     {
         /// <summary>
         /// Инициализация объекта Asteroid.
@@ -149,7 +149,10 @@ namespace AsteroidsDemo
         /// </summary>
         /// <param name="o"> Другой объект. </param>
         /// <returns></returns>
-        public bool Collision(ICollision o) => o.Rect.IntersectsWith(Rect);
+        public bool Collision(ICollision o)
+        {
+            return o.Rect.IntersectsWith(Rect);
+        }
 
         /// <summary>
         /// Поле, показывающее можно ли уничтожить объект.

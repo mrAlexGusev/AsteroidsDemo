@@ -12,7 +12,7 @@ namespace AsteroidsDemo
     /// <summary>
     /// Класс, отвечающий за создание коробля.
     /// </summary>
-    class Ship : BaseObject, ISprite, ICollision
+    public class Ship : BaseObject, ISprite, ICollision
     {
         /// <summary>
         /// Инициализация объекта Ship.
