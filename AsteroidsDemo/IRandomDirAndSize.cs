@@ -31,6 +31,6 @@ namespace AsteroidsDemo
         /// <summary>
         /// Задает случайное направление и размер объекта.
         /// </summary>
-        void SetRandomDisAndSize();
+        void SetRandomDirAndSize();
     }
 }

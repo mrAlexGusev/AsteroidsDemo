@@ -6,7 +6,7 @@ namespace AsteroidsDemo
     /// <summary>
     /// Класс, отвечающий за создание звезд.
     /// </summary>
-    class Star : BaseObject, ISprite, IRandomDirAndSize
+    public class Star : BaseObject, ISprite, IRandomDirAndSize
     {
         /// <summary>
         /// Инициализация объекта Star.
@@ -32,9 +32,11 @@ namespace AsteroidsDemo
         /// </summary>
         public override void Update()
         {
-            Pos.X -= Dir.X;
+            Pos.X -= Dir.X * Game.DeltaTime;
 
             if (!(Pos.X < 0 - Size.Width)) return;
+
+            SetRandomDirAndSize();
 
             Pos.X = Game.Width + Size.Width;
             Pos.Y = Game.R.Next(Game.Height - Size.Height);
@@ -88,7 +90,7 @@ namespace AsteroidsDemo
         /// <summary>
         /// Задает случайное направление и размер объекта Star.
         /// </summary>
-        public void SetRandomDisAndSize()
+        public void SetRandomDirAndSize()
         {
             // Звезда движется только справа налево.
 
@@ -110,7 +112,7 @@ namespace AsteroidsDemo
         protected override void OnEnable()
         {
             base.OnEnable();
-            SetRandomDisAndSize();
+            SetRandomDirAndSize();
         }
 
         /// <summary>

@@ -11,17 +11,17 @@ namespace AsteroidsDemo
         /// <summary>
         /// Положение BaseObject.
         /// </summary>
-        protected Vector2 Pos;
+        public Vector2 Pos;
 
         /// <summary>
         /// Направление BaseObject.
         /// </summary>
-        protected Vector2 Dir;
+        public Vector2 Dir;
 
         /// <summary>
         /// Размер BaseObject.
         /// </summary>
-        protected Size Size;
+        public Size Size;
 
         /// <summary>
         /// Инициализация BaseObject.
@@ -64,6 +64,7 @@ namespace AsteroidsDemo
                 if (_active == value) return;
 
                 _active = value;
+
                 if (_active) OnEnable();
                 else OnDisable();
             }

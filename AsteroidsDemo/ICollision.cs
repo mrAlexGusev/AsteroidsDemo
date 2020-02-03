@@ -5,7 +5,7 @@ namespace AsteroidsDemo
     /// <summary>
     /// Интерфейс объектов, которые могут сталкиваться.
     /// </summary>
-    interface ICollision
+    public interface ICollision
     {
         /// <summary>
         /// Задает область столкновения.

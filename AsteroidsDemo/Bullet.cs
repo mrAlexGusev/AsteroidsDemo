@@ -1,9 +1,10 @@
 ﻿using System.Drawing;
+using System.Linq;
 using System.Numerics;
 
 namespace AsteroidsDemo
 {
-    class Bullet : BaseObject, ISprite, ICollision
+    public class Bullet : BaseObject, ISprite, ICollision
     {
         /// <summary>
         /// Инициализация объекта Bullet.
@@ -35,7 +36,16 @@ namespace AsteroidsDemo
         public override void Update()
         {
             // Пуля летит слева направо.
-            Pos.X += Dir.X;
+            Pos.X += Dir.X * Game.DeltaTime;
+
+            foreach(var asteroid in Game.Asteroids.Where(a => a.Active).Where(Collision))
+            {
+
+                Active = false;
+                asteroid.Active = false;
+
+                Log.WriteLine("Астероид уничтожен.");
+            }
 
             // Если пуля за пределами, то уничтожаем.
             if (Pos.X > Game.Width - Size.Width) Active = false;
@@ -51,7 +61,9 @@ namespace AsteroidsDemo
         /// </summary>
         /// <param name="o"> Другой объект. </param>
         /// <returns></returns>
-        public bool Collision(ICollision o) => o.Rect.IntersectsWith(Rect);
-
+        public bool Collision(ICollision o)
+        {
+            return o.Rect.IntersectsWith(Rect);
+        }
     }
 }

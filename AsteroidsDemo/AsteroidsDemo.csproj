@@ -49,20 +49,24 @@
     <Compile Include="Asteroid.cs" />
     <Compile Include="BaseObject.cs" />
     <Compile Include="Bullet.cs" />
+    <Compile Include="BulletPool.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameObjectException.cs" />
     <Compile Include="ICollision.cs" />
     <Compile Include="IRandomDirAndSize.cs" />
     <Compile Include="ISprite.cs" />
+    <Compile Include="KeysHandler.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Planet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repair.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Ship.cs" />
     <Compile Include="Star.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +80,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Bullet.png" />
+    <None Include="Resources\Repair.png" />
+    <None Include="Resources\SpaceShip.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Asteroid1.png" />

@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace AsteroidsDemo
 {
-    class Asteroid : BaseObject, ISprite, IRandomDirAndSize, ICollision
+    public class Asteroid : BaseObject, ISprite, IRandomDirAndSize, ICollision
     {
         /// <summary>
         /// Инициализация объекта Asteroid.
@@ -14,6 +14,7 @@ namespace AsteroidsDemo
         public Asteroid(Vector2 pos, Vector2 dir, Size size) : base(pos, dir, size)
         {
             Sprite = Sprites[Game.R.Next(Sprites.Length)];
+            _destroyed = true;
         }
 
         /// <summary>
@@ -30,13 +31,13 @@ namespace AsteroidsDemo
         public override void Update()
         {
             // Астероид двигается
-            Pos.X -= Dir.X;
-            Pos.Y += Dir.Y;
+            Pos.X -= Dir.X * Game.DeltaTime;
+            Pos.Y += Dir.Y * Game.DeltaTime;
 
             // Астеройд вышел за границу по оси Х
             if (Pos.X < 0 - Size.Width)
             {
-                SetRandomDisAndSize();
+                SetRandomDirAndSize();
                 return;
             }
 
@@ -91,9 +92,19 @@ namespace AsteroidsDemo
         /// <summary>
         /// Задает случайное направление и размер объекта Asteroid.
         /// </summary>
-        public void SetRandomDisAndSize()
+        public void SetRandomDirAndSize()
         {
-            // Первоначальные координаты Астероида.
+            if (_destroyed)
+            {
+                Pos.X = Game.R.Next(Game.Width - Size.Width) + Game.Width;
+                Pos.Y = Game.R.Next(Game.Height - Size.Height);
+            }
+            else
+            {
+                Pos.X = Game.Width + Size.Width;
+                Pos.Y = Game.R.Next(Game.Height - Size.Height);
+
+            }
 
             Pos.X = Game.Width + Size.Width;
             Pos.Y = Game.R.Next(Game.Height - Size.Height);
@@ -122,7 +133,8 @@ namespace AsteroidsDemo
         protected override void OnEnable()
         {
             base.OnEnable();
-            SetRandomDisAndSize();
+            SetRandomDirAndSize();
+            _destroyed = false;
         }
 
         /// <summary>
@@ -137,6 +149,20 @@ namespace AsteroidsDemo
         /// </summary>
         /// <param name="o"> Другой объект. </param>
         /// <returns></returns>
-        public bool Collision(ICollision o) => o.Rect.IntersectsWith(Rect);
+        public bool Collision(ICollision o)
+        {
+            return o.Rect.IntersectsWith(Rect);
+        }
+
+        /// <summary>
+        /// Поле, показывающее можно ли уничтожить объект.
+        /// </summary>
+        private bool _destroyed;
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            _destroyed = true;
+        }
     }
 }

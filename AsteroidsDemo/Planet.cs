@@ -32,11 +32,11 @@ namespace AsteroidsDemo
         /// </summary>
         public override void Update()
         {
-            Pos.X -= Dir.X;
+            Pos.X -= Dir.X * Game.DeltaTime;
 
             if (!(Pos.X < 0 - Size.Width)) return;
 
-            SetRandomDisAndSize();
+            SetRandomDirAndSize();
 
             Pos.X = Game.Width + Size.Width;
             Pos.Y = Game.R.Next(Game.Height - Size.Height);
@@ -106,7 +106,7 @@ namespace AsteroidsDemo
         /// <summary>
         /// Задает случайное направление и размер объекта Planet.
         /// </summary>
-        public void SetRandomDisAndSize()
+        public void SetRandomDirAndSize()
         {
             // При вызове метода будем изменять картинку планеты.
             Sprite = Sprites[Game.R.Next(Sprites.Length)];
@@ -131,7 +131,7 @@ namespace AsteroidsDemo
         protected override void OnEnable()
         {
             base.OnEnable();
-            SetRandomDisAndSize();
+            SetRandomDirAndSize();
         }
 
         /// <summary>
