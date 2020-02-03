@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AsteroidsDemo
@@ -18,9 +17,29 @@ namespace AsteroidsDemo
         /// </summary>
         public static bool Tutorial;
 
+        /// <summary>
+        /// Звук ремонта.
+        /// </summary>
+        private static readonly SoundPlayer RepairSound;
+
+        /// <summary>
+        /// Звук уничтожения корабля.
+        /// </summary>
+        private static readonly SoundPlayer GameOverSound;
+
+        /// <summary>
+        /// Звук столкновения с астероидом.
+        /// </summary>
+        private static readonly SoundPlayer HitSound;
+
         static Game()
         {
             R = new Random();
+
+            // Установка звуков.
+            RepairSound = new SoundPlayer(Resources.RepairSound);
+            HitSound = new SoundPlayer(Resources.Hit);
+            GameOverSound = new SoundPlayer(Resources.GameOver);
 
             // Устанавливаем запись событий в консоль.
             Log.WriteLogEvent += Log.WriteToConsole;
@@ -304,16 +323,18 @@ namespace AsteroidsDemo
                     //
                     Ship.ChangeEnergy(-10 * asteroid.Size.Width / asteroid.MaxSize.Width);
 
-                    Log.WriteLine("Корабль столкнулся с астероидом");
+                    Log.WriteLine("Корабль столкнулся с астероидом.");
 
                     if (Ship.Energy == 0)
                     {
                         Ship.Active = false;
+                        GameOverSound.Play();
 
-                        Log.WriteLine("Корабль уничтожен");
+                        Log.WriteLine("Корабль уничтожен.");
                         break;
                     }
-                    
+
+                    HitSound.Play();
                 }
                     
             }
